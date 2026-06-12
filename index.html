@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freelance Rate Calculator — Find Your Real Hourly Rate (Free, No Email)</title>
+<meta name="description" content="Free freelance rate calculator. Work out the hourly and day rate you actually need to charge — including taxes, expenses, and time off. No signup, no email wall.">
+<!-- PRODUCTION: replace chandrakantgaurav05-code.github.io/ratefloor with your live URL everywhere below -->
+<link rel="canonical" href="https://chandrakantgaurav05-code.github.io/ratefloor/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Freelance Rate Calculator — Find Your Real Hourly Rate">
+<meta property="og:description" content="Free, no email wall. The rate you need once taxes, expenses, and unbillable hours are counted.">
+<meta property="og:url" content="https://chandrakantgaurav05-code.github.io/ratefloor/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Freelance Rate Calculator — Find Your Real Hourly Rate">
+<meta name="twitter:description" content="Free, no email wall. The rate you need once taxes, expenses, and unbillable hours are counted.">
+<meta name="theme-color" content="#1E6F4A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E6F4A'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' font-weight='bold' fill='white' text-anchor='middle'%3E%24%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;600&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How do I calculate my freelance hourly rate?", "acceptedAnswer": {"@type": "Answer", "text": "Add your target annual income, yearly business expenses, and a tax reserve, then divide by your true billable hours — the hours you can actually invoice after admin, marketing, and time off. Most freelancers can bill only 50–60% of their working hours."}},
+    {"@type": "Question", "name": "Why is my freelance rate higher than my old salary divided by hours?", "acceptedAnswer": {"@type": "Answer", "text": "Because you now pay both sides of payroll taxes, your own health insurance, equipment, software, and unpaid time for admin and finding clients. A rough rule: your freelance hourly rate needs to be 1.5x to 2x your old salaried hourly rate to break even."}},
+    {"@type": "Question", "name": "Should I charge hourly or per project?", "acceptedAnswer": {"@type": "Answer", "text": "Use your hourly rate as an internal floor, then quote fixed project prices to clients. Estimate the hours, multiply by your rate, and add a 15–25% buffer for revisions and scope creep."}}
+  ]
+}
+</script>
+<style>
+:root{
+  --paper:#F7F8F5;
+  --ink:#1A2420;
+  --ink-soft:#4A5650;
+  --bill-green:#1E6F4A;
+  --bill-green-dark:#155237;
+  --stamp-red:#B3402F;
+  --rule:#D8DCD6;
+  --receipt:#FFFFFF;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --display:'Space Grotesk',sans-serif;
+  --body:'Public Sans',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.6;font-size:16px}
+a{color:var(--bill-green)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+header{padding:20px 0;border-bottom:1px solid var(--rule)}
+header .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--bill-green)}
+nav a{font-size:.85rem;color:var(--ink-soft);text-decoration:none;margin-left:20px}
+nav a:hover{color:var(--ink)}
+
+.hero{padding:56px 0 40px}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,4.5vw,3rem);letter-spacing:-.02em;line-height:1.12;max-width:640px}
+.hero h1 em{font-style:normal;color:var(--bill-green)}
+.hero p{margin-top:14px;max-width:560px;color:var(--ink-soft)}
+.hero .free-tag{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:.75rem;border:1px solid var(--rule);padding:4px 10px;border-radius:3px;color:var(--ink-soft)}
+
+.calc{display:grid;grid-template-columns:1fr 380px;gap:40px;padding:24px 0 72px;align-items:start}
+@media(max-width:880px){.calc{grid-template-columns:1fr}}
+
+.inputs h2{font-family:var(--display);font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin:26px 0 4px;color:var(--ink)}
+.inputs h2:first-child{margin-top:0}
+.inputs .hint{font-size:.83rem;color:var(--ink-soft);margin-bottom:14px}
+.field{margin-bottom:18px}
+.field label{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:6px}
+.field label output{font-family:var(--mono);font-weight:600;color:var(--bill-green)}
+.field input[type=range]{width:100%;accent-color:var(--bill-green);height:28px}
+.field input[type=number]{width:100%;font-family:var(--mono);font-size:1rem;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;background:#fff;color:var(--ink)}
+.field input:focus-visible{outline:2px solid var(--bill-green);outline-offset:1px}
+.currency-row{display:flex;gap:10px;align-items:center;margin-bottom:18px}
+.currency-row label{font-size:.9rem;font-weight:600}
+.currency-row select{font-family:var(--mono);padding:8px 10px;border:1px solid var(--rule);border-radius:4px;background:#fff}
+
+.receipt{background:var(--receipt);border:1px solid var(--rule);border-radius:6px;padding:26px 24px 22px;font-family:var(--mono);position:sticky;top:20px;box-shadow:0 1px 2px rgba(26,36,32,.05),0 8px 24px rgba(26,36,32,.06)}
+.receipt::before,.receipt::after{content:"";display:block;height:8px;background:
+  linear-gradient(45deg,transparent 50%,var(--receipt) 50%) 0 0/12px 8px repeat-x}
+.receipt::before{transform:translateY(-26px) rotate(180deg);margin-bottom:-8px}
+.receipt::after{transform:translateY(22px)}
+.receipt h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.14em;text-align:center;font-weight:600;border-bottom:1px dashed var(--rule);padding-bottom:12px;margin-bottom:14px}
+.r-line{display:flex;justify-content:space-between;font-size:.83rem;padding:4px 0;color:var(--ink-soft)}
+.r-line b{color:var(--ink);font-weight:600}
+.r-sep{border-top:1px dashed var(--rule);margin:10px 0}
+.r-total{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0 2px}
+.r-total .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em}
+.r-total .val{font-size:1.9rem;font-weight:600;color:var(--bill-green);letter-spacing:-.02em}
+.r-sub{display:flex;justify-content:space-between;font-size:.83rem;padding:3px 0}
+.r-note{font-size:.72rem;color:var(--ink-soft);text-align:center;margin-top:12px;border-top:1px dashed var(--rule);padding-top:10px}
+.r-flag{font-size:.75rem;color:var(--stamp-red);text-align:center;margin-top:8px;font-weight:600;display:none}
+.copy-btn{width:100%;margin-top:14px;font-family:var(--display);font-weight:700;font-size:.85rem;padding:11px;border:none;border-radius:4px;background:var(--bill-green);color:#fff;cursor:pointer}
+.copy-btn:hover{background:var(--bill-green-dark)}
+.copy-btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+.section{padding:56px 0;border-top:1px solid var(--rule)}
+.section h2{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:18px}
+.section p{max-width:680px;color:var(--ink-soft);margin-bottom:14px}
+.section p b{color:var(--ink)}
+
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:8px}
+.tool{background:#fff;border:1px solid var(--rule);border-radius:6px;padding:20px}
+.tool h4{font-family:var(--display);font-size:1rem;margin-bottom:6px}
+.tool p{font-size:.86rem;margin-bottom:12px}
+.tool a{font-family:var(--mono);font-size:.8rem;font-weight:600;text-decoration:none}
+.tool a:hover{text-decoration:underline}
+.disclosure{font-size:.75rem;color:var(--ink-soft);margin-top:16px}
+
+.faq details{border-bottom:1px solid var(--rule);padding:14px 0;max-width:680px}
+.faq summary{font-weight:600;cursor:pointer;font-size:.95rem}
+.faq summary:focus-visible{outline:2px solid var(--bill-green);outline-offset:2px}
+.faq details p{margin-top:8px;font-size:.9rem}
+
+footer{padding:32px 0 48px;border-top:1px solid var(--rule);font-size:.8rem;color:var(--ink-soft)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#">rate<span>floor</span></a>
+    <nav aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <h1>Most freelancers undercharge.<br>Find the rate you <em>actually</em> need.</h1>
+    <p>Your real hourly rate isn't your old salary divided by 2,080. It has to cover taxes, software, slow months, and every hour you can't bill. Set your numbers below — the receipt does the math.</p>
+    <span class="free-tag">100% free · no email · runs in your browser</span>
+  </section>
+
+  <section class="calc wrap" aria-label="Rate calculator">
+    <div class="inputs">
+      <div class="currency-row">
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="$" selected>USD $</option>
+          <option value="€">EUR €</option>
+          <option value="£">GBP £</option>
+          <option value="₹">INR ₹</option>
+          <option value="A$">AUD $</option>
+          <option value="C$">CAD $</option>
+        </select>
+      </div>
+
+      <h2>Income</h2>
+      <p class="hint">What you want to take home before tax, per year.</p>
+      <div class="field">
+        <label for="income">Target annual income</label>
+        <input type="number" id="income" value="70000" min="0" step="1000">
+      </div>
+
+      <h2>Costs</h2>
+      <p class="hint">Business expenses and the slice you set aside for tax.</p>
+      <div class="field">
+        <label for="expenses">Monthly business expenses <output id="expensesOut">500</output></label>
+        <input type="range" id="expenses" min="0" max="5000" step="50" value="500" aria-describedby="expensesOut">
+      </div>
+      <div class="field">
+        <label for="tax">Tax reserve <output id="taxOut">25%</output></label>
+        <input type="range" id="tax" min="0" max="50" step="1" value="25" aria-describedby="taxOut">
+      </div>
+
+      <h2>Time</h2>
+      <p class="hint">Be honest — admin, proposals, and marketing aren't billable.</p>
+      <div class="field">
+        <label for="weeksOff">Weeks off per year <output id="weeksOffOut">5</output></label>
+        <input type="range" id="weeksOff" min="0" max="16" step="1" value="5" aria-describedby="weeksOffOut">
+      </div>
+      <div class="field">
+        <label for="billable">Billable hours per week <output id="billableOut">25</output></label>
+        <input type="range" id="billable" min="5" max="50" step="1" value="25" aria-describedby="billableOut">
+      </div>
+
+      <h2>Buffer</h2>
+      <p class="hint">Margin for gaps between clients, bad debts, and growth.</p>
+      <div class="field">
+        <label for="margin">Safety margin <output id="marginOut">15%</output></label>
+        <input type="range" id="margin" min="0" max="40" step="1" value="15" aria-describedby="marginOut">
+      </div>
+    </div>
+
+    <aside class="receipt" aria-live="polite" aria-label="Your calculated rate">
+      <h3>Your Rate · Itemized</h3>
+      <div class="r-line"><span>Target income</span><b id="rIncome">$70,000</b></div>
+      <div class="r-line"><span>Business expenses /yr</span><b id="rExpenses">$6,000</b></div>
+      <div class="r-line"><span>Tax reserve</span><b id="rTax">$23,333</b></div>
+      <div class="r-line"><span>Safety margin</span><b id="rMargin">$14,900</b></div>
+      <div class="r-sep"></div>
+      <div class="r-line"><span>Revenue needed /yr</span><b id="rRevenue">$114,233</b></div>
+      <div class="r-line"><span>Billable hours /yr</span><b id="rHours">1,175</b></div>
+      <div class="r-sep"></div>
+      <div class="r-total"><span class="lbl">Charge at least</span><span class="val" id="rRate">$97/hr</span></div>
+      <div class="r-sub"><span>Day rate (7.5h)</span><b id="rDay">$729</b></div>
+      <div class="r-sub"><span>Min. project (20h)</span><b id="rProject">$1,944</b></div>
+      <p class="r-flag" id="rFlag">⚠ Below typical market floor for skilled freelance work.</p>
+      <p class="r-note">Estimates only — not tax or financial advice.</p>
+      <button class="copy-btn" id="copyBtn" type="button">Copy my rate breakdown</button>
+    </aside>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <h2>Why this math is different</h2>
+      <p>A salaried job hides its true costs. Your employer pays half your payroll taxes, your health insurance, your laptop, your software, and — crucially — they pay you for the hours you spend in meetings, on email, and learning new skills.</p>
+      <p>As a freelancer, <b>every one of those costs lands on your invoice or it lands on you.</b> Most independent workers can genuinely bill only 50–60% of a working week once admin, proposals, and marketing are subtracted. That's why this calculator divides your revenue target by <b>billable</b> hours, not working hours — and why the result is usually 1.5–2× what your salaried hourly rate used to be.</p>
+      <p>Use the number on the receipt as your <b>floor</b>, not your price. Quote fixed project fees to clients, estimate hours privately, and never let the effective rate dip below your floor.</p>
+    </div>
+  </section>
+
+  <section class="section" id="tools">
+    <div class="wrap">
+      <h2>Tools that pay for themselves</h2>
+      <p>Once your rate is set, these are the categories that protect it. Swap in your preferred picks:</p>
+      <div class="tools">
+        <div class="tool">
+          <h4>Invoicing &amp; getting paid</h4>
+          <p>Late payments quietly destroy your real rate. Automated invoicing with reminders typically recovers its cost in the first month.</p>
+          <a href="#" rel="sponsored noopener" data-slot="invoicing">Compare invoicing tools →</a>
+        </div>
+        <div class="tool">
+          <h4>Business banking</h4>
+          <p>A separate business account makes your tax reserve real instead of theoretical — and makes tax season painless.</p>
+          <a href="#" rel="sponsored noopener" data-slot="banking">Compare business accounts →</a>
+        </div>
+        <div class="tool">
+          <h4>Contracts &amp; proposals</h4>
+          <p>Scope creep is an unbilled pay cut. A signed scope and a kill fee keep your effective rate above your floor.</p>
+          <a href="#" rel="sponsored noopener" data-slot="contracts">Compare contract tools →</a>
+        </div>
+      </div>
+      <p class="disclosure">Disclosure: links in this section may be affiliate links. If you sign up through them, this free tool earns a commission at no cost to you. That's the entire business model — no ads, no email capture.</p>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq">
+    <div class="wrap">
+      <h2>Frequently asked questions</h2>
+      <details>
+        <summary>How do I calculate my freelance hourly rate?</summary>
+        <p>Add your target annual income, yearly business expenses, and a tax reserve, then divide by your true billable hours — the hours you can actually invoice after admin, marketing, and time off. This calculator does exactly that, plus a safety margin for slow months.</p>
+      </details>
+      <details>
+        <summary>Why is my rate so much higher than my old salary suggested?</summary>
+        <p>You now pay both halves of payroll tax, your own insurance and equipment, and you absorb every unbillable hour. A rule of thumb: a freelance rate needs to be roughly 1.5–2× your old salaried hourly equivalent just to break even.</p>
+      </details>
+      <details>
+        <summary>Should I charge hourly or per project?</summary>
+        <p>Keep your hourly rate as a private floor and quote fixed project prices. Estimate the hours, multiply by your floor rate, and add 15–25% for revisions and scope creep. Clients prefer fixed prices, and you capture the upside of working efficiently.</p>
+      </details>
+      <details>
+        <summary>What counts as a billable hour?</summary>
+        <p>Only time you can put on an invoice: client work, client meetings, deliverable revisions. Proposals, bookkeeping, marketing, learning, and email are real work — but nobody pays for them directly, which is precisely why your billable hours must.</p>
+      </details>
+      <details>
+        <summary>Is my data stored anywhere?</summary>
+        <p>No. Everything runs in your browser. Nothing you type leaves your device, and there's no account, cookie wall, or email gate.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 ratefloor — free forever, runs entirely in your browser.</span>
+    <span>Estimates only. Not tax, legal, or financial advice.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var inputs=["income","expenses","tax","weeksOff","billable","margin","currency"];
+  var fmt=function(sym,n){return sym+Math.round(n).toLocaleString("en-US")};
+
+  function calc(){
+    var sym=$("currency").value;
+    var income=Math.max(0,parseFloat($("income").value)||0);
+    var expM=parseFloat($("expenses").value)||0;
+    var taxPct=(parseFloat($("tax").value)||0)/100;
+    var weeksOff=parseFloat($("weeksOff").value)||0;
+    var billWk=Math.max(1,parseFloat($("billable").value)||1);
+    var marginPct=(parseFloat($("margin").value)||0)/100;
+
+    $("expensesOut").textContent=fmt(sym,expM);
+    $("taxOut").textContent=Math.round(taxPct*100)+"%";
+    $("weeksOffOut").textContent=weeksOff;
+    $("billableOut").textContent=billWk;
+    $("marginOut").textContent=Math.round(marginPct*100)+"%";
+
+    var expY=expM*12;
+    // Gross-up: income must survive tax, so pre-tax base = (income)/(1-tax) ; expenses are pre-tax costs
+    var safeTax=Math.min(taxPct,0.95);
+    var preTax=income/(1-safeTax);
+    var taxAmt=preTax-income;
+    var base=preTax+expY;
+    var marginAmt=base*marginPct;
+    var revenue=base+marginAmt;
+    var hours=Math.max(1,(52-weeksOff)*billWk);
+    var rate=revenue/hours;
+
+    $("rIncome").textContent=fmt(sym,income);
+    $("rExpenses").textContent=fmt(sym,expY);
+    $("rTax").textContent=fmt(sym,taxAmt);
+    $("rMargin").textContent=fmt(sym,marginAmt);
+    $("rRevenue").textContent=fmt(sym,revenue);
+    $("rHours").textContent=Math.round(hours).toLocaleString("en-US");
+    $("rRate").textContent=fmt(sym,rate)+"/hr";
+    $("rDay").textContent=fmt(sym,rate*7.5);
+    $("rProject").textContent=fmt(sym,rate*20);
+    $("rFlag").style.display=(sym==="$"&&rate<30)?"block":"none";
+
+    window.__rateText="My freelance rate floor (via ratefloor)\n"
+      +"Hourly: "+fmt(sym,rate)+"/hr\n"
+      +"Day rate: "+fmt(sym,rate*7.5)+"\n"
+      +"Revenue needed/yr: "+fmt(sym,revenue)+"\n"
+      +"Billable hours/yr: "+Math.round(hours);
+  }
+
+  inputs.forEach(function(id){$(id).addEventListener("input",calc)});
+  $("copyBtn").addEventListener("click",function(){
+    var btn=this;
+    function done(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent="Copy my rate breakdown"},1600)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(window.__rateText).then(done,done);
+    }else{done()}
+  });
+  calc();
+})();
+</script>
+</body>
+</html>
